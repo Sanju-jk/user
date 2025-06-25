@@ -1,5 +1,5 @@
 import express from 'express'
-import { register, login } from '../controller/user.controller.js'
+import { register, login, getUsers, updateUser, deleteUser } from '../controller/user.controller.js'
 import { body } from 'express-validator';
 
 const router = express.Router()
@@ -19,6 +19,9 @@ const validateUserLogin = [
 
 router.post('/register', validateUserRegistration, register)
 router.post('/login',validateUserLogin, login)
+router.get('/get-users', getUsers)
+router.put('/update-user/:id', updateUser)
+router.delete('/delete-user/:id', deleteUser)
 
 export default router
 
