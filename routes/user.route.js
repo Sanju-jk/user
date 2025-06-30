@@ -1,6 +1,8 @@
 import express from 'express'
-import { register, login, getUsers, updateUser, deleteUser } from '../controller/user.controller.js'
+import { register, login, assignTask, getUserTasks, markTaskCompleted, getUsers, updateUser, deleteUser } from '../controller/user.controller.js'
 import { body } from 'express-validator';
+import { verifyJwt } from '../middleware/verifyJwt.js';
+import { authorizeRoles } from '../middleware/authorizeRole.js';
 
 const router = express.Router()
 
@@ -19,9 +21,16 @@ const validateUserLogin = [
 
 router.post('/register', validateUserRegistration, register)
 router.post('/login',validateUserLogin, login)
+
+router.post('/assign-task', verifyJwt, authorizeRoles('admin'), assignTask) 
+
+router.get('/my-tasks', verifyJwt, authorizeRoles('user'), getUserTasks)
+
+router.put('/mark-complete/:id', verifyJwt, authorizeRoles('user'), markTaskCompleted)
+
 router.get('/get-users', getUsers)
-router.put('/update-user/:id', updateUser)
-router.delete('/delete-user/:id', deleteUser)
+router.put('/update-user/:id',verifyJwt, updateUser)
+router.delete('/delete-user/:id', verifyJwt, deleteUser)
 
 export default router
 

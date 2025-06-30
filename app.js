@@ -5,14 +5,10 @@ import userRoutes from './routes/user.route.js'
 import dotenv from 'dotenv'
 dotenv.config();
 
-
 const app = express()
 app.use(express.json())
 
-app.use('/user', userRoutes)
-
-
-
+app.use('/api/v1', userRoutes)
 
 mongoose.connect(process.env.MONGO_URI).then(() => {
     console.log('Connected to MongoDB');
